@@ -1,0 +1,10 @@
+<%= form_with model: [:admin, @company], local: true, class: "bg-white p-6 rounded shadow-lg max-w-lg mx-auto" do |f| %>
+  <div class="mb-4">
+    <%= f.label :name, class: "block font-medium mb-2" %>
+    <%= f.text_field :name, class: "w-full border rounded px-3 py-2" %>
+  </div>
+
+  <div>
+    <%= f.submit "Save", class: "px-4 py-2 bg-gradient-to-r from-blue-400 to-blue-600 text-white rounded shadow hover:opacity-90 transition" %>
+  </div>
+<% end %>

@@ -1,0 +1,12 @@
+<%= form_with model: @user, url: @user.persisted? ? admin_company_user_path(@company, @user) : admin_company_users_path(@company), local: true do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name, required: true %>
+
+  <%= f.label :email %>
+  <%= f.email_field :email, required: true %>
+
+  <%= f.label :role %>
+  <%= f.select :role, User.roles.keys.map { |r| [r.titleize, r] }, {}, required: true %>
+
+  <%= f.submit %>
+<% end %>

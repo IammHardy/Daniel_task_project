@@ -1,0 +1,66 @@
+<!-- app/views/admin/dashboard/index.html.erb -->
+
+<div class="min-h-screen bg-gray-900 font-sans">
+  <!-- Header -->
+  <header class="flex flex-col md:flex-row justify-between items-center p-4 bg-gradient-to-r from-blue-500 to-blue-400 shadow-lg">
+    <h1 class="text-3xl md:text-4xl font-bold text-white mb-2 md:mb-0 drop-shadow-lg">
+      Admin Dashboard
+    </h1>
+
+    <div class="flex items-center space-x-4">
+      <span class="text-white font-semibold drop-shadow-sm">
+        Logged in as: <%= current_user.name %>
+      </span>
+
+      <%= link_to "Logout", destroy_user_session_path, method: :delete,
+                  class: "px-4 py-2 bg-gradient-to-r from-red-500 to-red-700 text-white rounded shadow hover:opacity-90 transition duration-300" %>
+    </div>
+  </header>
+
+  <main class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+    <!-- Companies Card -->
+    <div class="bg-gray-800 p-6 rounded-xl shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition duration-500 border-l-4 border-blue-400">
+      <h2 class="text-2xl font-bold mb-4 text-blue-400 drop-shadow-md">Companies</h2>
+      <%= link_to "View All Companies", admin_companies_path,
+                  class: "block mb-2 px-4 py-2 bg-gradient-to-r from-blue-400 to-blue-600 text-white rounded shadow hover:opacity-90 transition duration-300" %>
+      <%= link_to "New Company", new_admin_company_path,
+                  class: "block px-4 py-2 bg-gradient-to-r from-green-400 to-green-600 text-white rounded shadow hover:opacity-90 transition duration-300" %>
+    </div>
+
+    <!-- Sectors Card -->
+    <div class="bg-gray-800 p-6 rounded-xl shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition duration-500 border-l-4 border-blue-400">
+      <h2 class="text-2xl font-bold mb-4 text-blue-400 drop-shadow-md">Sectors</h2>
+
+      <% @companies.each do |company| %>
+        <div class="mb-3">
+          <strong class="text-white"><%= company.name %></strong>
+          <div class="flex gap-2 mt-1">
+            <%= link_to "View Sectors (#{company.sectors.size})", admin_company_sectors_path(company),
+                        class: "px-3 py-1 bg-gradient-to-r from-blue-400 to-blue-600 text-white rounded hover:opacity-90 transition" %>
+
+            <%= link_to "New Sector", new_admin_company_sector_path(company),
+                        class: "px-3 py-1 bg-gradient-to-r from-green-400 to-green-600 text-white rounded hover:opacity-90 transition" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Users Card -->
+    <div class="bg-gray-800 p-6 rounded-xl shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition duration-500 border-l-4 border-blue-400">
+      <h2 class="text-2xl font-bold mb-4 text-blue-400 drop-shadow-md">Users</h2>
+
+      <% @companies.each do |company| %>
+        <div class="mb-3">
+          <strong class="text-white"><%= company.name %></strong>
+          <div class="flex gap-2 mt-1">
+            <%= link_to "View Users (#{company.users.size})", admin_company_users_path(company),
+                        class: "px-3 py-1 bg-gradient-to-r from-blue-400 to-blue-600 text-white rounded hover:opacity-90 transition" %>
+
+            <%= link_to "New User", new_admin_company_user_path(company),
+                        class: "px-3 py-1 bg-gradient-to-r from-green-400 to-green-600 text-white rounded hover:opacity-90 transition" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </main>
+</div>
