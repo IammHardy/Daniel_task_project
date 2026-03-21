@@ -1,46 +1,39 @@
-class Admin::SectorsController < ApplicationController
-  before_action :authenticate_user!
-  before_action :require_admin
+class Admin::SectorsController < Admin::BaseController
   before_action :set_company, only: [:new, :create]
   before_action :set_sector, only: [:edit, :update, :destroy]
 
-  # GET /admin/sectors
   def index
-    @sectors = Sector.all
+    @sectors = Sector.where(company_id: params[:company_id])
   end
 
-  # GET /admin/companies/:company_id/sectors/new
   def new
-    @sector = @company.sectors.new
+    @sector = Sector.new
   end
 
-  # POST /admin/companies/:company_id/sectors
   def create
-    @sector = @company.sectors.new(sector_params)
+    @sector = Sector.new(sector_params)
+    @sector.company_id = @company.id
+
     if @sector.save
-      redirect_to admin_company_path(@company), notice: "Sector created successfully"
+      redirect_to admin_company_sectors_path(@company), notice: "Sector created"
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
-  # GET /admin/sectors/:id/edit
   def edit; end
 
-  # PATCH/PUT /admin/sectors/:id
   def update
     if @sector.update(sector_params)
-      redirect_to admin_company_path(@sector.company), notice: "Sector updated successfully"
+      redirect_to admin_company_sectors_path(@sector.company), notice: "Sector updated"
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /admin/sectors/:id
   def destroy
-    company = @sector.company
     @sector.destroy
-    redirect_to admin_company_path(company), notice: "Sector deleted"
+    redirect_to admin_company_sectors_path(@sector.company), notice: "Sector deleted"
   end
 
   private
@@ -55,9 +48,5 @@ class Admin::SectorsController < ApplicationController
 
   def sector_params
     params.require(:sector).permit(:name)
-  end
-
-  def require_admin
-    redirect_to root_path unless current_user.admin?
   end
 end
