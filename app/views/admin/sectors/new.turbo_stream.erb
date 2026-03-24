@@ -1,7 +1,0 @@
-<!-- app/views/admin/sectors/new.turbo_stream.erb -->
-<%= turbo_stream.replace "company_#{@company.id}_frame" do %>
-  <div class="bg-gray-700 p-4 rounded">
-    <h3 class="text-white font-semibold">New Sector for <%= @company.name %></h3>
-    <%= render "form", sector: @sector, company: @company %>
-  </div>
-<% end %>

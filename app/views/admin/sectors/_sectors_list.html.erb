@@ -1,13 +1,12 @@
-<!-- app/views/admin/sectors/_sectors_list.html.erb -->
 <div class="bg-gray-700 p-4 rounded">
   <h3 class="text-white font-semibold">Sectors for <%= company.name %></h3>
   <ul>
     <% sectors.each do |sector| %>
-  <li id="<%= dom_id(sector) %>" class="text-white py-1">
-  <%= sector.name %>
-  <%= link_to "Edit", edit_admin_company_sector_path(company, sector), class: "text-blue-400 ml-2" %>
-  <%= link_to "Delete", admin_company_sector_path(company, sector), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "text-red-400 ml-2" %>
-</li>
-<% end %>
+      <li class="text-white py-1">
+        <%= sector.name %>
+        <%= link_to "Edit", edit_admin_company_sector_path(company, sector), class: "text-blue-400 ml-2" %>
+        <%= link_to "Delete", admin_company_sector_path(company, sector), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "text-red-400 ml-2" %>
+      </li>
+    <% end %>
   </ul>
 </div>

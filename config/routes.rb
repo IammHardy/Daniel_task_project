@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
   resources :companies do
-    resources :sectors, only: [:index, :new, :create, :edit, :update, :destroy]
+    resources :sectors
     resources :users
   end
   resources :tasks

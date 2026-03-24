@@ -4,19 +4,19 @@ class ApplicationController < ActionController::Base
 
   allow_browser versions: :modern
 
-  def after_sign_in_path_for(resource)
-    case resource.role
-    when "admin"
-      admin_root_path
-    when "manager"
-      manager_root_path
-    when "employee"
-      employee_root_path
-    else
-      root_path
-    end
+  def redirect_by_role
+  case current_user.role
+  when "admin"
+    redirect_to admin_root_path
+  when "manager"
+    redirect_to manager_dashboard_path
+  when "employee"
+    redirect_to employee_dashboard_path
+  else
+    sign_out current_user
+    redirect_to root_path, alert: "Role not assigned. Contact admin."
   end
-
+end
   protected
 
   def configure_permitted_parameters
