@@ -11,15 +11,18 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def create
-    @user = User.new(user_params)
-    @user.company ||= @company
+  @user = @company.users.build(user_params)
+
+  respond_to do |format|
     if @user.save
-      redirect_to admin_company_users_path(@user.company), notice: "User created successfully"
+      format.turbo_stream { render turbo_stream: turbo_stream.prepend("users_list", partial: "admin/users/user", locals: { user: @user }) }
+      format.html { redirect_to admin_company_users_path(@company), notice: "User created" }
     else
-      load_collections
-      render :new
+      format.turbo_stream { render turbo_stream: turbo_stream.replace("new_user_form", partial: "admin/users/form", locals: { user: @user, company: @company, sectors: @sectors, managers: @managers }) }
+      format.html { render :new, status: :unprocessable_entity }
     end
   end
+end
 
   private
 

@@ -36,6 +36,15 @@
                           selected: @user.manager_id %>
 </div>
 
+ <%= f.label :password %>
+  <%= f.password_field :password, class: "border p-1 rounded" %>
+</div>
+
+<div>
+  <%= f.label :password_confirmation %>
+  <%= f.password_field :password_confirmation, class: "border p-1 rounded" %>
+</div>
+
   <div>
     <%= f.submit @user.persisted? ? "Update User" : "Create User",
                  class: "bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded hover:from-blue-500 hover:to-blue-700" %>

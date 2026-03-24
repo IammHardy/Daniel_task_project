@@ -1,0 +1,13 @@
+<tr id="user_<%= user.id %>">
+  <td><%= user.name %></td>
+  <td><%= user.email %></td>
+  <td><%= user.role.capitalize %></td>
+  <td>
+    <%= link_to "Edit", edit_admin_company_user_path(user.company, user), class: "text-blue-500" %>
+    |
+    <%= link_to "Delete", admin_company_user_path(user.company, user),
+          method: :delete,
+          data: { confirm: "Are you sure?" },
+          class: "text-red-500" %>
+  </td>
+</tr>

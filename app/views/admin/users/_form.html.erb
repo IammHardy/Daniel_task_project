@@ -1,4 +1,15 @@
-<%= form_with(model: [@company, @user], local: true) do |f| %>
+<% if user.errors.any? %>
+  <div class="bg-red-600 text-white p-2 mb-4 rounded">
+    <h4>Errors:</h4>
+    <ul>
+      <% user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with(model: [:admin, @company, @user], local: true) do |f| %>
   <div>
     <%= f.label :name %>
     <%= f.text_field :name, class: "border p-1 rounded" %>
@@ -8,6 +19,23 @@
     <%= f.label :email %>
     <%= f.email_field :email, class: "border p-1 rounded" %>
   </div>
+
+  <div>
+    <%= f.label :role %>
+    <%= f.select :role, User.roles.keys.map { |r| [r.titleize, r] }, {}, class: "border p-1 rounded" %>
+  </div>
+
+  <div>
+    <%= f.label :sector_id, "Sector" %>
+    <%= f.collection_select :sector_id, @sectors, :id, :name, {}, class: "border p-1 rounded" %>
+  </div>
+
+  <div>
+    <%= f.label :manager_id, "Manager" %>
+    <%= f.collection_select :manager_id, @managers, :id, :name, { include_blank: true }, class: "border p-1 rounded" %>
+  </div>
+  <div>
+ 
 
   <div class="mt-2">
     <%= f.submit "Save", class: "px-4 py-2 bg-blue-600 text-white rounded" %>
