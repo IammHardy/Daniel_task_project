@@ -1,5 +1,5 @@
 class Admin::UsersController < Admin::BaseController
-  before_action :set_company, only: [:new, :create]
+  before_action :set_company
   before_action :load_collections, only: [:new, :create]
 
  def index
@@ -34,10 +34,9 @@ end
     params.require(:user).permit(:name, :email, :password, :password_confirmation, :role, :company_id, :sector_id, :manager_id)
   end
 
- def set_companies_and_sectors
-    @companies = Company.all
-    @company = Company.find_by(id: params[:company_id])
-    @sectors = @company ? @company.sectors : Sector.all
-    @managers = @company ? @company.users.where(role: :manager) : User.where(role: :manager)
-  end
+  def set_company
+  @company = Company.find(params[:company_id])
+end
+
+ 
 end

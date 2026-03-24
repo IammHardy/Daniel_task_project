@@ -1,2 +1,72 @@
-<h1>Employee::Dashboard#index</h1>
-<p>Find me in app/views/employee/dashboard/index.html.erb</p>
+<div class="min-h-screen bg-gray-900 text-white font-sans">
+
+  <!-- HEADER -->
+  <header class="flex justify-between items-center p-4 bg-gradient-to-r from-purple-500 to-purple-400 shadow-lg">
+    <h1 class="text-2xl font-bold">Employee Dashboard</h1>
+    <div class="flex items-center gap-4">
+      <span>👋 <%= current_user.name %></span>
+      <%= link_to "Edit Profile", edit_user_registration_path, class: "px-3 py-1 bg-blue-500 rounded" %>
+      <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "px-3 py-1 bg-red-600 rounded" %>
+    </div>
+  </header>
+
+  <!-- STATS -->
+  <section id="task_stats" class="p-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div class="bg-gray-800 p-4 rounded shadow">
+      <p class="text-gray-400">Total Tasks</p>
+      <h2 class="text-2xl font-bold"><%= @tasks.count %></h2>
+    </div>
+    <div class="bg-gray-800 p-4 rounded shadow">
+      <p class="text-gray-400">Completed</p>
+      <h2 class="text-2xl font-bold"><%= @tasks.where(completed: true).count %></h2>
+    </div>
+    <div class="bg-gray-800 p-4 rounded shadow">
+      <p class="text-gray-400">Pending</p>
+      <h2 class="text-2xl font-bold"><%= @tasks.where(completed: false).count %></h2>
+    </div>
+  </section>
+
+  <!-- TASK LIST -->
+  <main class="p-6">
+    <h2 class="text-xl font-bold mb-4">My Tasks</h2>
+
+    <% if @tasks.any? %>
+      <div class="grid gap-4">
+        <% @tasks.each do |task| %>
+          <%= turbo_frame_tag dom_id(task) do %>
+            <div class="bg-gray-800 p-4 rounded-xl shadow hover:shadow-lg transition flex justify-between items-center">
+
+              <div>
+                <h2 class="text-lg font-semibold"><%= task.title %></h2>
+                <p class="text-sm text-gray-400">
+                  Due: <%= task.due_date&.strftime("%d %b %Y") || "No deadline" %>
+                </p>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <span class="px-3 py-1 text-xs rounded-full <%= task.completed? ? 'bg-green-600' : 'bg-yellow-500' %>">
+                  <%= task.completed? ? "Completed" : "Pending" %>
+                </span>
+
+                <% unless task.completed? %>
+                  <%= button_to "✔",
+                      employee_task_path(task),
+                      method: :patch,
+                      form: { "data-turbo-stream" => true },
+                      class: "px-2 py-1 bg-green-600 rounded text-xs hover:bg-green-700" %>
+                <% end %>
+
+                <%= link_to "View",
+                    employee_task_path(task),
+                    class: "px-3 py-1 bg-purple-500 rounded hover:opacity-90" %>
+              </div>
+
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-400">No tasks assigned yet.</p>
+    <% end %>
+  </main>
+</div>

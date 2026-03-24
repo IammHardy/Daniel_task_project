@@ -1,24 +1,15 @@
-<%= form_with(model: [:admin, @user], local: true) do |f| %>
-  <%= f.label :name %>
-  <%= f.text_field :name %>
+<%= form_with(model: [@company, @user], local: true) do |f| %>
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "border p-1 rounded" %>
+  </div>
 
-  <%= f.label :email %>
-  <%= f.email_field :email %>
+  <div>
+    <%= f.label :email %>
+    <%= f.email_field :email, class: "border p-1 rounded" %>
+  </div>
 
-  <%= f.label :role %>
-  <%= f.select :role, User.roles.keys.map { |r| [r.titleize, r] } %>
-
-  <%= f.label :sector_id, "Sector" %>
-  <%= f.collection_select :sector_id, @company.sectors, :id, :name, include_blank: true %>
-
-  <%= f.label :manager_id, "Manager" %>
-  <%= f.collection_select :manager_id, @company.users.where(role: :manager), :id, :name, include_blank: true %>
-
-  <%= f.label :password %>
-  <%= f.password_field :password %>
-
-  <%= f.label :password_confirmation %>
-  <%= f.password_field :password_confirmation %>
-
-  <%= f.submit %>
+  <div class="mt-2">
+    <%= f.submit "Save", class: "px-4 py-2 bg-blue-600 text-white rounded" %>
+  </div>
 <% end %>

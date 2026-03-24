@@ -13,11 +13,11 @@ class Task < ApplicationRecord
   validate :employee_and_manager_same_company
 
   def employee_and_manager_same_company
-    binding.pry   # <-- execution will pause here
+      # <-- execution will pause here
     return if employee.nil? || manager.nil?
 
     if employee.company_id != manager.company_id
-      errors.add(:employee, "must belong to same company as manager")
+      errors.add(:base, "must belong to same company as manager")
     end
   end
 end

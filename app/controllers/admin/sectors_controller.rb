@@ -19,7 +19,7 @@ class Admin::SectorsController < Admin::BaseController
     if @sector.save
       respond_to do |format|
         format.html { redirect_to admin_company_sectors_path(@company), notice: "Sector created" }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("company_#{@company.id}_frame", partial: "sectors/sectors_list", locals: { sectors: @company.sectors, company: @company }) }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("company_#{@company.id}_frame", partial: "admin/sectors/sectors_list", locals: { sectors: @company.sectors, company: @company }) }
       end
     else
       render :new, status: :unprocessable_entity

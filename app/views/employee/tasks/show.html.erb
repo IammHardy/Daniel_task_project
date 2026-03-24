@@ -1,0 +1,69 @@
+<div class="min-h-screen bg-gray-900 text-white p-6">
+
+  <%= link_to "← Back", employee_tasks_path, class: "text-purple-400 hover:underline mb-4 inline-block" %>
+
+  <div class="mt-6 bg-gray-800 p-6 rounded-xl shadow">
+    <h1 class="text-2xl font-bold mb-4"><%= @task.title %></h1>
+
+    <p class="text-gray-300 mb-4">
+      <%= @task.description.presence || "No description provided." %>
+    </p>
+
+    <p class="text-sm text-gray-400 mb-4">
+      Due Date: <%= @task.due_date&.strftime("%d %b %Y") || "No deadline" %>
+    </p>
+
+    <!-- Status -->
+    <div class="mb-4">
+      <span class="px-3 py-1 rounded-full text-sm
+        <%= @task.completed? ? 'bg-green-600' : 'bg-yellow-500' %>">
+        <%= @task.completed? ? "Completed" : "Pending" %>
+      </span>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex gap-4 mb-4">
+      <% unless @task.completed? %>
+        <%= button_to "Mark as Completed",
+            employee_task_path(@task, mark_complete: true),
+            method: :patch,
+            form: { "data-turbo-stream" => true },
+            class: "px-4 py-2 bg-green-600 rounded hover:bg-green-700" %>
+      <% end %>
+
+      <%= button_to "Request Extension",
+          employee_task_path(@task, request_extension: true),
+          method: :patch,
+          form: { "data-turbo-stream" => true },
+          class: "px-4 py-2 bg-yellow-600 rounded hover:bg-yellow-700" %>
+    </div>
+
+    <!-- Documents Upload -->
+    <div class="mb-4">
+      <h3 class="text-lg font-semibold mb-2">Documents</h3>
+      <%= form_with(model: @task, url: employee_task_path(@task), method: :patch, local: true) do |f| %>
+        <%= f.file_field :documents, multiple: true, direct_upload: true %>
+        <%= f.submit "Upload", class: "px-4 py-2 bg-blue-600 rounded mt-2" %>
+      <% end %>
+
+      <ul class="mt-2">
+        <% @task.documents.each do |doc| %>
+          <li>
+            <%= link_to doc.filename.to_s, url_for(doc), target: "_blank", class: "text-purple-400 hover:underline" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <!-- Comments (if you have them) -->
+    <% if @task.respond_to?(:comments) %>
+      <div>
+        <h3 class="text-lg font-semibold mb-2">Comments</h3>
+        <% @task.comments.each do |comment| %>
+          <p class="text-gray-300 mb-1"><strong><%= comment.user.name %>:</strong> <%= comment.body %></p>
+        <% end %>
+        <!-- Add comment form here -->
+      </div>
+    <% end %>
+  </div>
+</div>

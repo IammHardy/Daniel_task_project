@@ -22,9 +22,13 @@ end
 
   # Employee namespace
   namespace :employee do
-    resources :tasks, only: [:index, :show]
-    root "dashboard#index", as: :dashboard
+  resources :tasks, only: [:index, :show, :update] do
+    patch :upload, on: :member
+    patch :request_extension, on: :member
   end
+
+  root "dashboard#index", as: :dashboard
+end
 
   # Role-aware root path
   authenticated :user do

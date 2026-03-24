@@ -23,6 +23,12 @@
   </head>
 
   <body>
+  <% flash.each do |key, message| %>
+  <div class="m-4 p-4 rounded shadow
+    <%= key == 'alert' ? 'bg-red-600 text-white' : 'bg-green-600 text-white' %>">
+    <%= message %>
+  </div>
+<% end %>
     <%= yield %>
   </body>
 </html>
