@@ -1,0 +1,44 @@
+<h1 class="text-2xl font-bold mb-4">Assign Task</h1>
+
+<%= form_with model: [:manager, @task], local: true do |f| %>
+
+  <div class="mb-3">
+    <%= f.label :title %>
+    <%= f.text_field :title, class: "border px-3 py-2 rounded w-full" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :description %>
+    <%= f.text_area :description, class: "border px-3 py-2 rounded w-full" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :employee_id, "Assign to Employee" %>
+    <%= f.collection_select :employee_id, @employees, :id, :name,
+          { prompt: "Select Employee" },
+          class: "border px-3 py-2 rounded w-full" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :sector_id, "Sector" %>
+    <%= f.collection_select :sector_id, @sectors, :id, :name,
+          { prompt: "Select Sector" },
+          class: "border px-3 py-2 rounded w-full" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :priority %>
+    <%= f.select :priority, Task.priorities.keys.map { |p| [p.humanize, p] },
+          {}, class: "border px-3 py-2 rounded w-full" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :due_date %>
+    <%= f.date_field :due_date, class: "border px-3 py-2 rounded w-full" %>
+  </div>
+
+  <div>
+    <%= f.submit "Assign Task", class: "px-4 py-2 bg-blue-600 text-white rounded" %>
+  </div>
+
+<% end %>

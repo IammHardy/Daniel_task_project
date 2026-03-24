@@ -1,19 +1,16 @@
-class Admin::DashboardController < ApplicationController
+class Admin::DashboardController < Admin::BaseController
   before_action :authenticate_user!
-  before_action :require_admin
+  before_action :ensure_admin!
 
   def index
-      @companies = Company.includes(:users, :sectors)
-     # Totals for dashboard cards
-    @total_companies = Company.count
-    @total_sectors = Sector.count
-    @total_managers = User.where(role: "manager").count
+    @companies = Company.includes(:users, :sectors).all
   end
 
 
   private
 
-  def require_admin
-    redirect_to root_path unless current_user.admin?
-  end
+  def ensure_admin!
+  redirect_to manager_root_path, alert: "Not authorized" unless current_user.admin?
+end
+
 end

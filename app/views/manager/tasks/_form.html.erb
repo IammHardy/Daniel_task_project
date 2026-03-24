@@ -1,0 +1,24 @@
+<%= form_with(model: @task, local: true) do |f| %>
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+
+  <%= f.label :description %>
+  <%= f.text_area :description %>
+
+  <%= f.label :employee_id, "Assign to Employee" %>
+  <%= f.collection_select :employee_id, @employees, :id, :name %>
+
+  <%= f.label :sector_id, "Sector" %>
+  <%= f.collection_select :sector_id, @sectors, :id, :name %>
+
+  <%= f.label :status %>
+  <%= f.select :status, Task.statuses.keys.map { |s| [s.titleize, s] } %>
+
+  <%= f.label :priority %>
+  <%= f.select :priority, Task.priorities.keys.map { |p| [p.titleize, p] } %>
+
+  <%= f.label :due_date %>
+  <%= f.date_field :due_date %>
+
+  <%= f.submit %>
+<% end %>

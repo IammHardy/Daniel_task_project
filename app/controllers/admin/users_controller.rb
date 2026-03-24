@@ -1,55 +1,43 @@
 class Admin::UsersController < Admin::BaseController
   before_action :set_company, only: [:new, :create]
-  before_action :set_user, only: [:edit, :update, :destroy]
+  before_action :load_collections, only: [:new, :create]
 
-  def index
-    @users = User.where(company_id: params[:company_id])
+ def index
+    @users = User.includes(:company, :sector).all
   end
-
   def new
     @user = User.new
+    @user.company = @company if @company
   end
 
   def create
     @user = User.new(user_params)
-    @user.company_id = @company.id
-
+    @user.company ||= @company
     if @user.save
-      respond_to do |format|
-        format.html { redirect_to admin_company_users_path(@company), notice: "User created successfully" }
-        format.turbo_stream
-      end
+      redirect_to admin_company_users_path(@user.company), notice: "User created successfully"
     else
-      render :new, status: :unprocessable_entity
+      load_collections
+      render :new
     end
-  end
-
-  def edit; end
-
-  def update
-    if @user.update(user_params)
-      redirect_to admin_company_users_path(@user.company), notice: "User updated successfully"
-    else
-      render :edit, status: :unprocessable_entity
-    end
-  end
-
-  def destroy
-    @user.destroy
-    redirect_to admin_company_users_path(@user.company), notice: "User deleted successfully"
   end
 
   private
 
-  def set_company
-    @company = Company.find(params[:company_id])
-  end
-
-  def set_user
-    @user = User.find(params[:id])
-  end
+  def load_collections
+  @companies = Company.all
+  @company = Company.find_by(id: params[:company_id])
+  @sectors = @company ? @company.sectors : Sector.all
+  @managers = @company ? @company.users.where(role: :manager) : User.where(role: :manager)
+end
 
   def user_params
-    params.require(:user).permit(:name, :email, :role, :sector_id, :manager_id, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :role, :company_id, :sector_id, :manager_id)
+  end
+
+ def set_companies_and_sectors
+    @companies = Company.all
+    @company = Company.find_by(id: params[:company_id])
+    @sectors = @company ? @company.sectors : Sector.all
+    @managers = @company ? @company.users.where(role: :manager) : User.where(role: :manager)
   end
 end

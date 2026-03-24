@@ -1,0 +1,4 @@
+
+<%= turbo_stream.replace "company_#{@company.id}_frame" do %>
+  <%= render partial: "sectors_list", locals: { sectors: @company.sectors, company: @company } %>
+<% end %>

@@ -1,13 +1,15 @@
-class Employee::DashboardController < ApplicationController
+class Employee::DashboardController < Employee::BaseController
   before_action :authenticate_user!
-  before_action :require_employee
+  before_action :ensure_employee!
 
   def index
+    # Only show tasks assigned to the current employee
+    @tasks = current_user.tasks_as_employee.includes(:manager, :sector, :company).order(created_at: :desc)
   end
 
   private
 
-  def require_employee
-    redirect_to root_path unless current_user.employee?
+  def ensure_employee!
+    redirect_to root_path, alert: "Unauthorized" unless current_user.employee?
   end
 end

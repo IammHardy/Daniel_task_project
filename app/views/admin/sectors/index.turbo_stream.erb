@@ -1,0 +1,11 @@
+<!-- app/views/admin/sectors/index.turbo_stream.erb -->
+<%= turbo_stream.replace "company_#{@company.id}_frame" do %>
+  <div class="bg-gray-700 p-4 rounded">
+    <h3 class="text-white font-semibold">Sectors for <%= @company.name %></h3>
+    <ul>
+      <% @sectors.each do |sector| %>
+        <li class="text-white"><%= sector.name %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

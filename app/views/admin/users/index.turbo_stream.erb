@@ -1,0 +1,11 @@
+<!-- app/views/admin/users/index.turbo_stream.erb -->
+<%= turbo_stream.replace "company_#{@company.id}_frame" do %>
+  <div class="bg-gray-700 p-4 rounded">
+    <h3 class="text-white font-semibold">Users for <%= @company.name %></h3>
+    <ul>
+      <% @users.each do |user| %>
+        <li class="text-white"><%= user.name %> (<%= user.role %>)</li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

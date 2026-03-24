@@ -9,20 +9,25 @@
 #   end
 # db/seeds.rb
 
-# Create default company
-company = Company.find_or_create_by!(name: "Default Company")
-
-# Create default sector
-sector = Sector.find_or_create_by!(name: "Default Sector")
-
-# Create admin user
-User.find_or_create_by!(email: "admin@example.com") do |user|
-  user.password = "password123"
-  user.password_confirmation = "password123"
-  user.name = "Admin User"
-  user.role = :admin
-  user.company = company
-  user.sector = sector
+company = Company.first || Company.create!(name: "Test Company")
+sector = Sector.first || Sector.create!(name: "General", company: company)
+manager = User.find_or_create_by!(email: "manager@test.com") do |u|
+  u.name = "Test Manager"
+  u.password = u.password_confirmation = "password"
+  u.role = :manager
+  u.company_id = company.id
 end
-
-puts "✅ Admin user created: admin@example.com / password123"
+employee = User.find_or_create_by!(email: "employee@test.com") do |u|
+  u.name = "Test Employee"
+  u.password = u.password_confirmation = "password"
+  u.role = :employee
+  u.company_id = company.id
+  u.manager_id = manager.id
+  u.sector_id = sector.id
+end
+Task.find_or_create_by!(title: "Test Task", employee: employee) do |t|
+  t.description = "Sample task"
+  t.manager = manager
+  t.sector = sector
+  t.company = company
+end

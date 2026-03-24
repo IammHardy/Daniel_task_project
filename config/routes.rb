@@ -1,29 +1,36 @@
 Rails.application.routes.draw do
-  root to: "admin/dashboard#index"
 
-  # Namespaces
-  namespace :employee do
-    get "dashboard/index"
-  end
+  # Devise routes for users
+  devise_for :users
 
-  namespace :manager do
-    get "dashboard/index"
-  end
+
 
   namespace :admin do
-    root "dashboard#index"
-    resources :companies do
-      get :sectors, on: :member
-      resources :sectors, shallow: true
-      resources :users, only: [:index, :new, :create, :edit, :update, :destroy], shallow: true
-    end
+  resources :companies do
+    resources :sectors, only: [:index, :new, :create, :edit, :update, :destroy]
+    resources :users
+  end
+  resources :tasks
+  root "dashboard#index"
+end
+
+  # Manager namespace
+  namespace :manager do
+    resources :tasks
+    root "dashboard#index", as: :dashboard
   end
 
- 
+  # Employee namespace
+  namespace :employee do
+    resources :tasks, only: [:index, :show]
+    root "dashboard#index", as: :dashboard
+  end
 
-  # Devise users
-   devise_for :users, skip: [:registrations]
+  # Role-aware root path
+  authenticated :user do
+    root to: "home#redirect_by_role", as: :authenticated_root
+  end
 
-  # Health check
-  get "up" => "rails/health#show", as: :rails_health_check
+  # Default root for guests
+  root "home#index"
 end

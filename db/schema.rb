@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_19_080708) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_21_064140) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -59,16 +59,20 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_19_080708) do
   create_table "tasks", force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.integer "status"
-    t.integer "priority"
+    t.integer "status", default: 0
+    t.integer "priority", default: 1
     t.date "due_date"
-    t.integer "progress"
+    t.integer "progress", default: 0
     t.bigint "manager_id"
     t.bigint "employee_id"
     t.bigint "sector_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "company_id", null: false
+    t.index ["company_id"], name: "index_tasks_on_company_id"
+    t.index ["employee_id", "status"], name: "index_tasks_on_employee_id_and_status"
     t.index ["employee_id"], name: "index_tasks_on_employee_id"
+    t.index ["manager_id", "status"], name: "index_tasks_on_manager_id_and_status"
     t.index ["manager_id"], name: "index_tasks_on_manager_id"
     t.index ["sector_id"], name: "index_tasks_on_sector_id"
   end
@@ -89,6 +93,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_19_080708) do
     t.string "google_uid"
     t.string "google_token"
     t.string "google_refresh_token"
+    t.boolean "password_changed"
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["manager_id"], name: "index_users_on_manager_id"
@@ -99,6 +104,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_19_080708) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "sectors", "companies"
+  add_foreign_key "tasks", "companies"
   add_foreign_key "tasks", "sectors"
   add_foreign_key "tasks", "users", column: "employee_id"
   add_foreign_key "tasks", "users", column: "manager_id"

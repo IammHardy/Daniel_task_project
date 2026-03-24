@@ -1,0 +1,9 @@
+<%= form_with(model: [@company, @sector], local: true) do |f| %>
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "border p-1 rounded" %>
+  </div>
+  <div class="mt-2">
+    <%= f.submit "Save", class: "px-4 py-2 bg-blue-600 text-white rounded" %>
+  </div>
+<% end %>

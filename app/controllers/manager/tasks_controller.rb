@@ -1,60 +1,51 @@
-class Manager::TasksController < Manager::BaseController
-  before_action :set_task, only: [:edit, :update, :destroy]
+class Manager::TasksController < ApplicationController
+  before_action :authenticate_user!
+  before_action :ensure_manager!
 
   def index
-    @tasks = Task.where(manager_id: current_user.id)
+    @tasks = current_user.tasks_as_manager.includes(:employee, :sector).order(created_at: :desc)
   end
 
   def new
     @task = Task.new
-    @employees = current_user.employees
-    @sectors = current_user.company.sectors
+    load_collections
   end
 
   def create
     @task = Task.new(task_params)
-    @task.manager_id = current_user.id
-    @task.company_id = current_user.company_id
+    @task.manager = current_user
+    @task.company = current_user.company
 
     if @task.save
-      respond_to do |format|
-        format.html { redirect_to manager_tasks_path, notice: "Task created" }
-        format.turbo_stream
-      end
+      redirect_to manager_tasks_path, notice: "Task assigned successfully."
     else
-      @employees = current_user.employees
-      @sectors = current_user.company.sectors
-      render :new, status: :unprocessable_entity
+      load_collections
+      render :new
     end
-  end
-
-  def edit
-    @employees = current_user.employees
-    @sectors = current_user.company.sectors
-  end
-
-  def update
-    if @task.update(task_params)
-      redirect_to manager_tasks_path, notice: "Task updated"
-    else
-      @employees = current_user.employees
-      @sectors = current_user.company.sectors
-      render :edit, status: :unprocessable_entity
-    end
-  end
-
-  def destroy
-    @task.destroy
-    redirect_to manager_tasks_path, notice: "Task deleted"
   end
 
   private
 
-  def set_task
-    @task = current_user.tasks.find(params[:id])
+  def ensure_manager!
+    redirect_to root_path, alert: "Unauthorized" unless current_user.manager?
   end
 
   def task_params
-    params.require(:task).permit(:title, :description, :employee_id, :sector_id, :status, :priority, :due_date)
+    params.require(:task).permit(
+      :title,
+      :description,
+      :employee_id,
+      :sector_id,
+      :priority,
+      :due_date
+    )
+  end
+
+  def load_collections
+    # Only employees under this manager & company
+    @employees = current_user.employees.includes(:sector)
+
+    # Only sectors in manager's company
+    @sectors = current_user.company.sectors
   end
 end

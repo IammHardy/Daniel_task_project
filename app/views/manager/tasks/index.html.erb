@@ -1,0 +1,30 @@
+<h1 class="text-2xl font-bold mb-4">My Assigned Tasks</h1>
+
+<%= link_to "New Task", new_manager_task_path,
+    class: "px-4 py-2 bg-green-600 text-white rounded mb-4 inline-block" %>
+
+<table class="w-full border">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Employee</th>
+      <th>Status</th>
+      <th>Priority</th>
+      <th>Sector</th>
+      <th>Due Date</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tasks.each do |task| %>
+      <tr>
+        <td><%= task.title %></td>
+        <td><%= task.employee&.name %></td>
+        <td><%= task.status.humanize %></td>
+        <td><%= task.priority.humanize %></td>
+        <td><%= task.sector.name %></td>
+        <td><%= task.due_date || "N/A" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

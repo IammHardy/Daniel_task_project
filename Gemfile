@@ -43,6 +43,9 @@ gem "devise"
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 
+gem "cssbundling-rails"
+gem 'pry-byebug', group: [:development, :test]
+
 gem 'dotenv-rails', groups: [:development, :test] # to store API keys safely
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
@@ -69,4 +72,3 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
-gem "cssbundling-rails"
