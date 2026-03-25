@@ -15,13 +15,7 @@
     <%= f.select :role, User.roles.keys.map { |r| [r.titleize, r] },
                  {}, class: "border px-3 py-2 rounded w-full" %>
   </div>
-  <div>
-  <%= f.label :company_id, "Company", class: "block font-medium mb-1" %>
-  <%= f.collection_select :company_id, @companies, :id, :name, { prompt: "Select Company" },
-                          class: "border px-3 py-2 rounded w-full",
-                          selected: @user.company_id %>
-</div>
-
+  
 <div>
   <%= f.label :sector_id, "Sector", class: "block font-medium mb-1" %>
   <%= f.collection_select :sector_id, @sectors, :id, :name, { prompt: "Select Sector" },

@@ -1,2 +1,100 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<div class="min-h-screen bg-gray-900 text-white">
+  <div class="max-w-6xl mx-auto px-6 py-12">
+    <div class="text-center max-w-2xl mx-auto">
+      <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-white">
+        Welcome to WorkflowAI
+      </h1>
+      <p class="mt-3 text-sm md:text-base text-gray-300 leading-7">
+        A simple workflow platform for admins, managers, and employees to manage teams,
+        tasks, and day-to-day operations efficiently.
+      </p>
+    </div>
+
+    <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="bg-gray-800 border border-gray-700 rounded-xl p-5 shadow-sm">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="h-9 w-9 rounded-full bg-blue-500/15 flex items-center justify-center text-blue-400 font-semibold text-sm">
+            A
+          </div>
+          <h2 class="text-lg font-semibold text-white">Admin</h2>
+        </div>
+
+        <p class="text-sm text-gray-300 leading-6">
+          Manage companies, sectors, users, and platform activity from the admin dashboard.
+        </p>
+
+        <ul class="mt-4 space-y-1.5 text-sm text-gray-400">
+          <li>• Manage companies</li>
+          <li>• Create and manage users</li>
+          <li>• Oversee platform workflow</li>
+        </ul>
+
+        <div class="mt-5">
+          <%= link_to "Sign in as Admin",
+              new_user_session_path,
+              class: "inline-flex items-center justify-center w-full px-4 py-2.5 rounded-lg bg-blue-500 hover:bg-blue-600 text-sm font-medium text-white transition" %>
+        </div>
+      </div>
+
+      <div class="bg-gray-800 border border-gray-700 rounded-xl p-5 shadow-sm">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="h-9 w-9 rounded-full bg-green-500/15 flex items-center justify-center text-green-400 font-semibold text-sm">
+            M
+          </div>
+          <h2 class="text-lg font-semibold text-white">Manager</h2>
+        </div>
+
+        <p class="text-sm text-gray-300 leading-6">
+          Supervise team execution, monitor progress, and keep work moving smoothly.
+        </p>
+
+        <ul class="mt-4 space-y-1.5 text-sm text-gray-400">
+          <li>• Monitor team tasks</li>
+          <li>• Review progress</li>
+          <li>• Support delivery timelines</li>
+        </ul>
+
+        <div class="mt-5">
+          <%= link_to "Sign in as Manager",
+              new_user_session_path,
+              class: "inline-flex items-center justify-center w-full px-4 py-2.5 rounded-lg bg-green-500 hover:bg-green-600 text-sm font-medium text-white transition" %>
+        </div>
+      </div>
+
+      <div class="bg-gray-800 border border-gray-700 rounded-xl p-5 shadow-sm">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="h-9 w-9 rounded-full bg-purple-500/15 flex items-center justify-center text-purple-400 font-semibold text-sm">
+            E
+          </div>
+          <h2 class="text-lg font-semibold text-white">Employee</h2>
+        </div>
+
+        <p class="text-sm text-gray-300 leading-6">
+          View assigned tasks, submit updates, and stay on track with deadlines.
+        </p>
+
+        <ul class="mt-4 space-y-1.5 text-sm text-gray-400">
+          <li>• Access assigned tasks</li>
+          <li>• Submit updates</li>
+          <li>• Track deadlines</li>
+        </ul>
+
+        <div class="mt-5">
+          <%= link_to "Sign in as Employee",
+              new_user_session_path,
+              class: "inline-flex items-center justify-center w-full px-4 py-2.5 rounded-lg bg-purple-500 hover:bg-purple-600 text-sm font-medium text-white transition" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 max-w-3xl mx-auto">
+      <div class="bg-gray-800 border border-yellow-500/30 rounded-xl px-5 py-4">
+        <h3 class="text-sm font-semibold text-yellow-300">Password notice</h3>
+        <p class="mt-2 text-sm text-gray-300 leading-6">
+          Managers and employees should reset their password immediately after first login.
+          If an admin created your account, sign in with the provided credentials and update your password right away.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

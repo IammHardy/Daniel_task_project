@@ -1,0 +1,51 @@
+<div class="min-h-screen flex items-center justify-center bg-slate-900 text-slate-50 px-6 py-12">
+  <div class="w-full max-w-md">
+    <div class="border border-slate-800 bg-slate-950 px-8 py-8">
+      <div class="text-center">
+        <h1 class="text-2xl font-semibold tracking-tight text-slate-100">
+          Sign in
+        </h1>
+        <p class="mt-2 text-sm text-slate-400">
+          Access your WorkflowAI account
+        </p>
+      </div>
+
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "mt-8 space-y-5" }) do |f| %>
+        <div>
+          <%= f.label :email, class: "block text-sm text-slate-300 mb-1" %>
+          <%= f.email_field :email,
+              autofocus: true,
+              class: "w-full border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-blue-500 outline-none" %>
+        </div>
+
+        <div>
+          <%= f.label :password, class: "block text-sm text-slate-300 mb-1" %>
+          <%= f.password_field :password,
+              class: "w-full border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-blue-500 outline-none" %>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="flex items-center gap-2">
+            <%= f.check_box :remember_me, class: "h-4 w-4" %>
+            <%= f.label :remember_me, class: "text-sm text-slate-400" %>
+          </div>
+        <% end %>
+
+        <div>
+          <%= f.submit "Sign in",
+              class: "w-full bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2" %>
+        </div>
+      <% end %>
+
+      <div class="mt-6 border-t border-slate-800 pt-4 text-center">
+        <p class="text-sm text-slate-400">
+          Managers and employees should reset their password after first login.
+        </p>
+      </div>
+
+      <div class="mt-4 text-center text-sm">
+        <%= render "devise/shared/links" %>
+      </div>
+    </div>
+  </div>
+</div>
